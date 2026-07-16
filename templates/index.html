@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <title>File Manager</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <!-- Lock Screen -->
+    <div id="lockScreen" class="lock-screen">
+        <div class="lock-box">
+            <h1>🔐 File Manager</h1>
+            <input type="password" id="password" placeholder="Password" autocomplete="off" />
+            <button onclick="unlock()">Unlock</button>
+            <div id="error" class="error"></div>
+        </div>
+    </div>
+
+    <!-- Home Page -->
+    <div id="home" class="home-page hidden">
+        <div class="hero">
+            <div class="hero-bg"></div>
+            <div class="hero-content">
+                <h1>Curated Wallpapers</h1>
+                <p>Beautiful images for your screen</p>
+                <button class="cta" onclick="openDashboard()">Explore Files</button>
+                <br>
+                <a href="/ai" class="nav-link" style="margin-top:12px;display:inline-block;">🤖 AI Guide →</a>
+            </div>
+        </div>
+        <div class="gallery-section">
+            <h2>✨ Recent</h2>
+            <div class="gallery-scroll" id="gallery"></div>
+        </div>
+        <button class="fab" onclick="openDashboard()">📁</button>
+    </div>
+
+    <!-- Dashboard -->
+    <div id="dashboard" class="dashboard hidden">
+        <div class="dash-header">
+            <h1>📁 Files</h1>
+            <div class="nav-row">
+                <a href="/ai" class="nav-link">🤖 AI</a>
+                <button class="btn-ghost" style="padding:5px 10px;font-size:11px;margin-left:6px;" onclick="goHome()">←</button>
+            </div>
+        </div>
+        <div class="dash-content">
+            <button class="upload-zone" id="uploadZone">📤 Upload to <strong id="currentFolderLabel">Root</strong></button>
+            <input type="file" id="fileInput" multiple="multiple" accept="*/*" style="display:none;" />
+            <input type="text" class="search-box" id="searchInput" placeholder="🔍 Search files..." oninput="loadFiles()" />
+            <div class="breadcrumb" id="breadcrumb"></div>
+            <div class="status" id="status"></div>
+            <div class="file-list" id="fileList"></div>
+        </div>
+        <div class="bottom-bar">
+            <button class="btn-ghost" onclick="goHome()">🏠</button>
+            <button class="btn-green" onclick="document.getElementById('fileInput').click()">📤</button>
+            <button class="btn-ghost" onclick="showCreateFileModal()">📝</button>
+            <button class="btn-ghost" onclick="showCreateFolderModal()">📁</button>
+            <button class="btn-ghost" onclick="loadFiles()">🔄</button>
+            <button class="btn-ghost" onclick="logout()">🔒</button>
+        </div>
+    </div>
+
+    <!-- Create File Modal -->
+    <div id="createFileModal" class="modal hidden">
+        <div class="modal-inner">
+            <button class="modal-close" onclick="hideModal('createFileModal')">✕</button>
+            <h3>📝 Create File</h3>
+            <input type="text" id="cfName" placeholder="filename.txt" />
+            <textarea id="cfContent" placeholder="Content..."></textarea>
+            <div class="modal-actions">
+                <button class="btn-cancel" onclick="hideModal('createFileModal')">Cancel</button>
+                <button class="btn-save" onclick="createFile()">💾 Save</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Create Folder Modal -->
+    <div id="createFolderModal" class="modal hidden">
+        <div class="modal-inner">
+            <button class="modal-close" onclick="hideModal('createFolderModal')">✕</button>
+            <h3>📁 Create Folder</h3>
+            <input type="text" id="folderName" placeholder="Folder name" />
+            <div class="modal-actions">
+                <button class="btn-cancel" onclick="hideModal('createFolderModal')">Cancel</button>
+                <button class="btn-save" onclick="createFolder()">Create</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Preview Modal -->
+    <div id="previewModal" class="modal hidden">
+        <div class="modal-inner">
+            <button class="modal-close" onclick="hideModal('previewModal')">✕</button>
+            <div id="previewContent"></div>
+        </div>
+    </div>
+
+    <!-- Share Modal -->
+    <div id="shareModal" class="modal hidden">
+        <div class="modal-inner" style="max-width:400px;">
+            <button class="modal-close" onclick="hideModal('shareModal')">✕</button>
+            <h3>🔗 Share File</h3>
+            <p id="shareFileName" style="font-size:13px;margin-bottom:8px;"></p>
+            <input type="text" id="shareUrl" readonly onclick="this.select()" />
+            <div class="share-buttons">
+                <button class="share-btn share-telegram" onclick="shareTo('telegram')">📱 Telegram</button>
+                <button class="share-btn share-whatsapp" onclick="shareTo('whatsapp')">💬 WhatsApp</button>
+                <button class="share-btn share-facebook" onclick="shareTo('facebook')">📘 Facebook</button>
+                <button class="share-btn share-twitter" onclick="shareTo('twitter')">🐦 Twitter</button>
+                <button class="share-btn share-email" onclick="shareTo('email')">📧 Email</button>
+                <button class="share-btn share-copy" onclick="copyShareUrl()">📋 Copy Link</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/script.js"></script>
+</body>
+</html>
